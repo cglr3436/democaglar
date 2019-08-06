@@ -52,40 +52,27 @@ public class DemocaglarApplication {
 
     }
 
-    @RequestMapping(value = "/test",method = RequestMethod.GET)
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    @RequestMapping(value="/test")
+    @ResponseBody
+    public String methodtest(){
+        StringBuffer test=new StringBuffer();
 
-        // set response headers
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
 
-        // create HTML form
-        PrintWriter writer = response.getWriter();
-        writer.append("<!DOCTYPE html>\r\n")
-                .append("<html>\r\n")
-                .append("		<head>\r\n")
-                .append("			<title>Form input</title>\r\n")
-                .append("		</head>\r\n")
-                .append("		<body>\r\n")
-                .append("			<form action=\"kayit\" method=\"POST\">\r\n")
+               test.append(" <form action=\"kayit\"${user}\"${user_surname}\"${user_tel}\"${user_tel}"
+                        +"method=\"POST\">\r\n")
                 .append("				Enter your name: \r\n")
                 .append("				<input type=\"text\" name=\"user\" />\r\n")
                 .append("				Enter your surname: \r\n")
                 .append("				<input type=\"text\" name=\"user_surname\" />\r\n")
                 .append("				Enter your tel: \r\n")
                 .append("				<input type=\"text\" name=\"user_tel\" />\r\n")
-                .append("				<input type=\"submit\" value=\"Submit\" />\r\n")
+                .append("				<input type=\"submit\" value=\"KAYIT\" />\r\n")
                 .append("			</form>\r\n")
-                .append("   <form> ")
-                .append("   <form action = \"sil\" method = \"POST\">\r\n")
-                .append("       <input type=\"submit\" value=\"SİL\" />\r\n")
-                .append("   <form> ")
-                .append("   <form action = \"liste\" method = \"GET\">\r\n")
-                .append("       <input type=\"submit\" value=\"Submit\" />\r\n")
-                .append("   <form> ")
-                .append("		</body>\r\n")
-                .append("</html>\r\n");
+                .append("   </form> ")
+                .append("   <form action = \"listes\" method = \"GET\">\r\n")
+                .append("       <input type=\"submit\" value=\"LISTE\" />\r\n")
+                .append("   </form> ");
+        return test.toString();
     }
     @PutMapping("rparam")
     public void put(@RequestParam("test") String test) {
@@ -107,9 +94,12 @@ public class DemocaglarApplication {
                     .append(kisiList.get(i).getId().toString())
                     .append(">")
                     .append(" " + kisiList.get(i).getAd() + "\n" + "</p>\n")
-                    .append("	<input type=\"submit\" value=\"Submit\" />\r\n")
+                    .append("	<input type=\"submit\" value=\"SIL\" />\r\n")
                     .append("			</form>\r\n");
         }
+        test.append("   <form action = \"test\" method = \"GET\">\r\n")
+                .append("       <input type=\"submit\" value=\"ANASAYFA\" />\r\n")
+                .append("   </form> ");
         return test.toString();
     }
 
@@ -129,142 +119,46 @@ public class DemocaglarApplication {
                     .append(">")
                     .append("<p>" + kisiList.get(i).getAd() + "\n" + "</p>\n");
         }
+
+        test.append("   <form action = \"test\" method = \"GET\">\r\n")
+                .append("       <input type=\"submit\" value=\"ANASAYFA\" />\r\n")
+                .append("   </form> ");
         return test.toString();
     }
 
 
-
-    @RequestMapping(value ={"/kayit" },method = RequestMethod.POST)
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        request.getParameterValues("value") ;
-        PrintWriter writer = response.getWriter();
-
-         String user = request.getParameter("user");
-            String user_surname = request.getParameter("user_surname");
-            String user_tel = request.getParameter("user_tel");
-            Kisi yenikisi = new Kisi();
-            yenikisi.setAd(user);
-            yenikisi.setSoyAdi(user_surname);
-            yenikisi.setTel(user_tel);
-
-            kisiRepository.save(yenikisi);
-
-            response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
-
-            // create HTML response
-
-            writer.append("<!DOCTYPE html>\r\n")
-                    .append("<html>\r\n")
-                    .append("		<head>\r\n")
-                    .append("			<title>KAYITLILAR</title>\r\n")
-                    .append("		</head>\r\n")
-                    .append("		<body>\r\n");
-
-
-            List<Kisi> kisiList = kisiRepository.findAll();
-            ArrayList asdsd = (ArrayList) kisiList;
-            int a = kisiList.size();
-            for (int i = 0; i < a; i++) {
-                writer.append("<p>" +kisiList.get(i).getId()+" "+kisiList.get(i).getAd() + "\n" + "</p>");
-            }
-
-
-        writer.append("   <form action = \"test\" method = \"GET\">\r\n")
-                .append("       <input type=\"submit\" value=\"test\" />\r\n")
-                .append("   <form> ")
-        .append("   <form action = \"listes\" method = \"GET\">\r\n")
-                .append("     <input type=\"submit\" value=\"liste\" />\r\n")
-                .append("   <form> ")
-        .append("		</body>\r\n")
-                .append("</html>\r\n");
-    }
-
-
-    @RequestMapping(value = "/sil/id",method = RequestMethod.POST)
-    protected void doPostss(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String id = request.getParameter("id");
-        Long IDSI= Long.valueOf(id).longValue();
-
-        kisiRepository.deleteById(IDSI);
-
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
-
-        // create HTML response
-        PrintWriter writer = response.getWriter();
-        writer.append("<!DOCTYPE html>\r\n")
-                .append("<html>\r\n")
-                .append("		<head>\r\n")
-                .append("			<title>silme yapma </title>\r\n")
-                .append("		</head>\r\n")
-                .append("		<body>\r\n")
-                .append("   <form action = \"test\" method = \"GET\">\r\n")
-                .append("       <button>GERİ</button>\r\n")
-                .append("   <form> ")
-                .append("		</body>\r\n")
-                .append("   <form action = \"liste\" method = \"POST\">\r\n")
-                .append("       <button>liste</button>\r\n")
-                .append("   <form> ")
-                .append("</html>\r\n");
-    }
-
-
-    @RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
-    public String index(Model model) {
-
-        String message = "Hello Spring Boot + JSP";
-
-        model.addAttribute("message", message);
-
-        return "index";
-    }
-
-    @RequestMapping(value = { "/personList" }, method = RequestMethod.GET)
-    public String viewPersonList(Model model) {
-
-        model.addAttribute("persons", persons);
-
-        return "personList";
-    }
-
- /*
-    @RequestMapping(value = "/welcome",method = RequestMethod.POST)
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String user = request.getParameter("user");
-
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
-
-        // create HTML response
-        PrintWriter writer = response.getWriter();
-        writer.append("<!DOCTYPE html>\r\n")
-                .append("<html>\r\n")
-                .append("		<head>\r\n")
-                .append("			<title>Welcome message</title>\r\n")
-                .append("		</head>\r\n")
-                .append("		<body>\r\n");
-        if (user != null && !user.trim().isEmpty()) {
-            writer.append("	Welcome " + user + ".\r\n");
-            writer.append("	You successfully completed this javatutorial.net example.\r\n");
-        } else {
-            writer.append("	You did not entered a name!\r\n");
-        }
-        writer.append("		</body>\r\n")
-                .append("</html>\r\n");
-    }
-*/
-
-
+    @RequestMapping(value = "/kayit")
     @ResponseBody
-    public String method3(){
-        return "method3";
+    public String kayits(@RequestParam(value = "user")  String adi,
+                         @RequestParam(value = "user_surname") String soyadi,
+                         @RequestParam(value = "user_tel") String tel){
+
+
+
+        Kisi yenikisi = new Kisi();
+        yenikisi.setAd(adi);
+        yenikisi.setSoyAdi(soyadi);
+        yenikisi.setTel(tel);
+
+        kisiRepository.save(yenikisi);
+        List<Kisi> kisiList = kisiRepository.findAll();
+        StringBuffer test=new StringBuffer();
+
+        int a = kisiList.size();
+        for (int i = 0; i < a; i++) {
+            test.append("<p>" +kisiList.get(i).getId()+" "+ kisiList.get(i).getAd() +
+                    " "+ kisiList.get(i).getSoyAdi() + " "+ kisiList.get(i).getTel() + "\n" + "</p>\n");
+        }
+        test.append("   <form action = \"listes\" method = \"POST\">\r\n")
+                .append("       <input type=\"submit\" value=\"LISTELE\" />\r\n")
+                .append("   </form> ");
+        test.append("   <form action = \"test\" method = \"GET\">\r\n")
+                .append("       <input type=\"submit\" value=\"ANASAYFA\" />\r\n")
+                .append("   </form> ");
+        return test.toString();
     }
+
+
 
     public static void main(String[] args) {
         SpringApplication.run(DemocaglarApplication.class, args);
