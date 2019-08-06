@@ -90,11 +90,11 @@ public class DemocaglarApplication {
         int a = kisiList.size();
         for (int i = 0; i < a; i++) {
             test.append("<form action=\"sil\"${id}"+""+"method=\"POST\">\r\n").
-            append("<p><input type=\"text\" name=\"id\" value=")
+            append("<p><input type=\"checkbox\" name=\"id\" value=")
                     .append(kisiList.get(i).getId().toString())
                     .append(">")
-                    .append(" " + kisiList.get(i).getAd() + "\n" + "</p>\n")
-                    .append("	<input type=\"submit\" value=\"SIL\" />\r\n")
+                    .append(" " + kisiList.get(i).getAd() + "\n" + "\n")
+                    .append("	<input type=\"submit\" value=\"SIL\" /></p>\r\n")
                     .append("			</form>\r\n");
         }
         test.append("   <form action = \"test\" method = \"GET\">\r\n")
@@ -114,10 +114,10 @@ public class DemocaglarApplication {
 
         int a = kisiList.size();
         for (int i = 0; i < a; i++) {
-            test.append("<input type=\"text\" name=\"id\" value=")
+            test.append("<p><input type=\"checkbox\" name=\"id\" value=")
                     .append(kisiList.get(i).getId().toString())
-                    .append(">")
-                    .append("<p>" + kisiList.get(i).getAd() + "\n" + "</p>\n");
+                    .append("/>")
+                    .append("" + kisiList.get(i).getAd() + "\n" + "</p>\n");
         }
 
         test.append("   <form action = \"test\" method = \"GET\">\r\n")
@@ -125,6 +125,8 @@ public class DemocaglarApplication {
                 .append("   </form> ");
         return test.toString();
     }
+
+
 
 
     @RequestMapping(value = "/kayit")
